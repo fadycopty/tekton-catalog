@@ -48,7 +48,7 @@ spec:
 
   steps:
     - name: discovery
-      image: icr.io/continuous-delivery/cra-discovery:release.1724
+      image: icr.io/continuous-delivery/cra-discovery:release.1862
       env:
         - name: API_KEY
           valueFrom:
@@ -82,10 +82,12 @@ spec:
           API_ENDPOINT="https://cloud.ibm.com"
           OTC_BROKER_BASE_URL="https://otcbroker.devopsinsights.cloud.ibm.com"
           PIPELINE_URL="https://cloud.ibm.com"
+          IAM_URL="https://iam.cloud.ibm.com"
           if echo "${REGION_ID}" | grep -q "ys1"; then
             OTC_BROKER_BASE_URL="https://otcbroker.devopsinsights.dev.cloud.ibm.com"
             API_ENDPOINT="https://test.cloud.ibm.com"
             PIPELINE_URL="https://dev.console.test.cloud.ibm.com"
+            IAM_URL="https://iam.test.cloud.ibm.com"
             echo "targeting otc broker @ ${OTC_BROKER_BASE_URL}"
             echo "targeting ibm cloud @ ${API_ENDPOINT}"
           fi
@@ -94,7 +96,7 @@ spec:
 
           echo "Fetching users's token"
           ibmcloud config --check-version false
-          sh /scripts/retry.sh ibmcloud login -a $API_ENDPOINT -r $TOOLCHAIN_REGION --apikey $API_KEY
+          sh /scripts/retry.sh ibmcloud login -a $API_ENDPOINT --no-region --apikey $API_KEY
           export IBM_CLOUD_BEARER=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token' | awk '{ print $2 }')
 
           echo "Fetching service urls for user's data"
@@ -150,6 +152,7 @@ spec:
             -rigapi "${gitsecureUrl}" \
             -region "${TOOLCHAIN_REGION}" \
             -pipelineurl "${PIPELINE_URL}" \
+            -iamurl "${IAM_URL}" \
             -runid "${PIPELINE_RUN_ID}" \
             -commitid "$(params.commit-id)" \
             -commitTimestamp "$(params.commit-timestamp)" \
