@@ -5,56 +5,56 @@ metadata:
   name: pr-pipeline
 spec:
   params:
-    - name: repository
-      description: the git repo
-    - name: branch
-      description: branch
-    - name: revision
-      description: the git revision/commit for the git repo
-      default: ""
-    - name: target-branch
-      description: target branch
-    - name: commit-id
-      description: commit id
-    - name: commit-timestamp
-      description: commit timestamp
-    - name: pipeline-debug
-      description: toggles debug mode for the pipeline
-    - name: pr-url
-      description: pr url
-    - name: target-commit-id
-      description: target branch commit id
-    - name: project-id
-      description: project id
-      default: ""
-    - name: scm-type
-      description: source code type used (github, github-ent, gitlab)
-    - name: ibmcloud-api
-      description: the ibmcloud api
-      default: https://cloud.ibm.com
-    - name: tf-dir
-      description: the directory where the terraform main entry file is found
-      default: ""
-    - name: policy-config-json
-      description: Configure policies to control thresholds
-      default: ""
-    - name: tf-var-file
-      description: (optional) terraform var-file
-      default: ""
-    - name: pr-repository
-      value: $(params.pr-repository)
-    - name: pr-branch
-      value: $(params.pr-branch)
+  - name: repository
+    description: the git repo
+  - name: branch
+    description: branch
+  - name: revision
+    description: the git revision/commit for the git repo
+    default: ""
+  - name: target-branch
+    description: target branch
+  - name: commit-id
+    description: commit id
+  - name: commit-timestamp
+    description: commit timestamp
+  - name: pipeline-debug
+    description: toggles debug mode for the pipeline
+  - name: pr-url
+    description: pr url
+  - name: target-commit-id
+    description: target branch commit id
+  - name: project-id
+    description: project id
+    default: ""
+  - name: scm-type
+    description: source code type used (github, github-ent, gitlab)
+  - name: ibmcloud-api
+    description: the ibmcloud api
+    default: https://cloud.ibm.com
+  - name: tf-dir
+    description: the directory where the terraform main entry file is found
+    default: ""
+  - name: policy-config-json
+    description: Configure policies to control thresholds
+    default: ""
+  - name: tf-var-file
+    description: (optional) terraform var-file
+    default: ""
+  - name: pr-repository
+    value: $(params.pr-repository)
+  - name: pr-branch
+    value: $(params.pr-branch)
   workspaces:
-    - name: artifacts
+  - name: artifacts
 
   tasks:
-    - name: extract-repository-url
-      taskRef:
-        name: toolchain-extract-value
-      params:
-        - name: expression
-          # if a params.repository is given, it takes precedence
-          value: '. as $toolchain | ["$(params.repository)"] | if .[0]=="" then $toolchain | .services[] | select(.toolchain_binding.name=="repo") | .dashboard_url else .[0] end'
-        - name: pipeline-debug
-          value: $(params.pipeline-debug)
+  - name: extract-repository-url
+    taskRef:
+      name: toolchain-extract-value
+    params:
+    - name: expression
+      # if a params.repository is given, it takes precedence
+      value: '. as $toolchain | ["$(params.repository)"] | if .[0]=="" then $toolchain | .services[] | select(.toolchain_binding.name=="repo") | .dashboard_url else .[0] end'
+    - name: pipeline-debug
+      value: $(params.pipeline-debug)
