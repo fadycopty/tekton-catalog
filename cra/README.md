@@ -685,3 +685,6 @@ Example usage in a pipeline.
         - name: tf-var-file
           value: $(params.tf-var-file)
 ```
+
+### Configuring CRA Terraform scan
+Read more about using terraform scan profile: (https://github.com/fadycopty/tekton-catalog/blob/master/cra/terraform-profile.md)
