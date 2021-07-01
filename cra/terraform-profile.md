@@ -6,7 +6,6 @@ CRA-terraform supports configuring the terraform scan allowing: (1) Chosing rule
 For a Terraform configuration being analyzed, a file with the following structure needs to be defined.  
 The content of the file is a JSON object with the following properties:
 1. `"scc_goals"` - SCC goals to evaluate by goal ID.
-1. `"rego_rules"` - SCC goal associated Rego Rules to evaluate 
 1. `"scc_goal_parameters"` - Contains the parameters values for configurable SCC goals  
 
 All properties are optional.
